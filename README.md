@@ -65,7 +65,7 @@ To add a new item, open `js/pos.js` and add an entry to the `MENU` constant:
 ```js
 const MENU = {
   // existing items...
-  'Sinigang na Baboy': { price: 139, image: 'sinigang na Baboy.webp' },
+  'Sinigang na Baboy': { price: 139, image: 'images/your-photo.jpg' },
 };
 ```
 

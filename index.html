@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chibugbog POS — Kainan Counter</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lora:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@400;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+  <header>
+    <div>
+      <p class="tagline">Kainan Counter — Point of Sale</p>
+      <h1>CHIBUG<span>BOG</span></h1>
+    </div>
+  </header>
+
+  <!-- ── MAIN GRID ──────────────────────────────────────────────────────── -->
+  <div class="main-grid">
+
+    <!-- LEFT: Menu Panel -->
+    <div class="panel">
+      <p class="panel-title">Tap an item to add it to your order</p>
+      <div class="menu-grid" id="menuGrid"></div>
+    </div>
+
+    <!-- RIGHT: Order + Payment Panel -->
+    <div class="order-panel">
+
+      <!-- Current Order List -->
+      <div class="panel order-list">
+        <p class="panel-title">Current order</p>
+        <div id="orderItems">
+          <p class="order-empty">No items yet — tap a menu card to start.</p>
+        </div>
+      </div>
+
+      <!-- Order Total -->
+      <div class="total-bar">
+        <div class="total-row">
+          <span>Items</span>
+          <span id="itemCount">0</span>
+        </div>
+        <div class="total-row big">
+          <span>Total</span>
+          <span class="amount" id="totalDisplay">₱0.00</span>
+        </div>
+      </div>
+
+      <!-- Payment Section -->
+      <div class="panel pay-section">
+        <p class="pay-label">Payment</p>
+        <div class="cash-input-row">
+          <input
+            type="number"
+            class="cash-input"
+            id="cashInput"
+            placeholder="Cash tendered (₱)"
+            min="0"
+            step="1"
+          />
+          <button class="pay-btn" id="payBtn" disabled>Pay!</button>
+        </div>
+        <div class="change-display" id="changeDisplay" style="display:none;">
+          <span>Change</span>
+          <span class="change-val" id="changeVal">₱0.00</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TOAST NOTIFICATION ─────────────────────────────────────────────── -->
+  <div id="toast"></div>
+
+  <!-- JavaScript -->
+  <script src="js/pos.js"></script>
+
+</body>
+</html>

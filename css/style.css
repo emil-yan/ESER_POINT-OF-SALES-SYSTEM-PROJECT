@@ -1,0 +1,461 @@
+/* =============================================================================
+   CHIBUGBOG POS — style.css
+   Design system: Chibugbog restaurant theme
+   Fonts: Bebas Neue (display) · Lora (body/italic) · Barlow Condensed (UI)
+   ============================================================================= */
+
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ── Design Tokens ──────────────────────────────────────────────────────────── */
+:root {
+  --bg:       #0d0702;   /* deep charred brown — main background            */
+  --surface:  #1a0e05;   /* panel backgrounds                                */
+  --surface2: #2a1505;   /* card / input backgrounds                         */
+  --border:   #3a2010;   /* all borders                                      */
+  --accent:   #e8a020;   /* Chibugbog gold — primary accent                  */
+  --accent2:  #c4956a;   /* warm tan — secondary accent / hover glow         */
+  --green:    #6dbb30;   /* change amount indicator                          */
+  --text:     #f5e6c8;   /* cream — primary text                             */
+  --muted:    #7a5530;   /* muted brown — labels, hints, placeholders        */
+  --radius:   10px;      /* shared border-radius                             */
+}
+
+
+/* ── Base Body ──────────────────────────────────────────────────────────────── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif;
+  min-height: 100vh;
+  /* Subtle warm radial ambient glow */
+  background-image:
+    radial-gradient(ellipse at 10% 20%, rgba(232, 160, 32, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 80%, rgba(196, 149, 106, 0.05) 0%, transparent 50%);
+}
+
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+header {
+  padding: 1.6rem 2rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+/* Gold highlight on "BOG" */
+header h1 span {
+  color: var(--accent);
+}
+
+.tagline {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+
+/* ── Main Two-Column Grid ────────────────────────────────────────────────────── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Stack to single column on narrow screens */
+@media (max-width: 780px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}
+
+
+/* ── Panel (shared card wrapper) ─────────────────────────────────────────────── */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+}
+
+.panel-title {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+
+/* ── Menu Grid ───────────────────────────────────────────────────────────────── */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+
+/* ── Menu Card ───────────────────────────────────────────────────────────────── */
+.menu-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gold shimmer hover overlay */
+.menu-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.menu-card:hover              { border-color: var(--accent); transform: translateY(-2px); }
+.menu-card:hover::before      { opacity: 0.08; }
+.menu-card:active             { transform: scale(0.97); }
+
+/*
+ * .menu-card .item-img-wrap
+ *   Fixed-size container — always 100% card width × 110px tall.
+ *   overflow: hidden clips any photo that is larger or oddly shaped.
+ *   position: relative keeps it stacked above the ::before shimmer overlay.
+ *
+ * .menu-card .item-img-wrap img
+ *   object-fit: cover fills the box and centre-crops the image so that
+ *   whatever dimensions the photo has (portrait, landscape, square, tiny,
+ *   huge) it always fills the container cleanly without stretching or
+ *   leaving empty space.
+ *
+ *   To swap a photo: update the `image` path in MENU inside pos.js.
+ *   No CSS changes are ever needed when replacing images.
+ */
+.menu-card .item-img-wrap {
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  border-radius: 6px;
+  margin-bottom: 0.6rem;
+  position: relative; /* sits above ::before overlay */
+  background: var(--surface2); /* placeholder colour while image loads */
+}
+
+.menu-card .item-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* crop-to-fill — dimension-proof */
+  object-position: center; /* focus on the centre of the photo */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Subtle zoom on card hover — works for any image size */
+.menu-card:hover .item-img-wrap img {
+  transform: scale(1.06);
+}
+
+.menu-card .item-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+
+.menu-card .item-price {
+  font-family: 'Lora', serif;
+  font-size: 0.82rem;
+  color: var(--accent);
+  margin-top: 0.2rem;
+  position: relative;
+}
+
+/* "+" badge that appears on hover */
+.menu-card .add-hint {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #0d0702;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  font-weight: 900;
+}
+
+.menu-card:hover .add-hint { opacity: 1; }
+
+
+/* ── Order Panel (right column) ─────────────────────────────────────────────── */
+.order-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-list {
+  flex: 1;
+  min-height: 200px;
+}
+
+.order-empty {
+  color: var(--muted);
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+
+/* ── Order Item Row ─────────────────────────────────────────────────────────── */
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.order-item .oi-name {
+  flex: 1;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.order-item .oi-qty-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+
+/* ── Quantity Controls ───────────────────────────────────────────────────────── */
+.qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, border-color 0.1s;
+  font-weight: 700;
+}
+
+.qty-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d0702;
+}
+
+.qty-val {
+  font-family: 'Lora', serif;
+  font-size: 0.85rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.oi-sub {
+  font-family: 'Lora', serif;
+  font-size: 0.82rem;
+  color: var(--accent);
+  min-width: 52px;
+  text-align: right;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.1s;
+}
+
+.remove-btn:hover { color: #e84040; }
+
+
+/* ── Total Bar ───────────────────────────────────────────────────────────────── */
+.total-bar {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.05em;
+}
+
+/* Large total line */
+.total-row.big {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.06em;
+  color: var(--text);
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.total-row.big .amount { color: var(--accent); }
+
+
+/* ── Payment Section ─────────────────────────────────────────────────────────── */
+.pay-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.pay-label {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.cash-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cash-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Lora', serif;
+  font-size: 1rem;
+  padding: 0.6rem 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.cash-input:focus       { border-color: var(--accent); }
+.cash-input::placeholder { color: var(--muted); }
+
+.pay-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  color: #0d0702;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  padding: 0.6rem 1.3rem;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.pay-btn:hover    { opacity: 0.88; }
+.pay-btn:active   { transform: scale(0.97); }
+.pay-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+
+/* ── Change Display ──────────────────────────────────────────────────────────── */
+.change-display {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.change-display .change-val {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  color: var(--green);
+}
+
+
+/* ── Toast Notification ──────────────────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.4rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transform: translateY(120%);
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+  z-index: 999;
+  max-width: 280px;
+}
+
+#toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}

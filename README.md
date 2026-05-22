@@ -5,7 +5,7 @@ A lightning-fast, zero-overhead Point of Sales (POS) system designed for Chibugb
 ---
 
 ## ⚡ Live Link
-🌐 **[Deploy Your GitHub Pages URL Here]**
+🌐 **https://emil-yan.github.io/ESER_POINT-OF-SALES-SYSTEM-PROJECT/**
 
 ---
 
